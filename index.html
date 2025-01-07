@@ -130,21 +130,27 @@
         <div class="pagination"></div>
     </main>
     <script>
-        const itemsPerPage = 16;
+        const itemsPerPage = 16; // Number of items per page
         let currentPage = 1;
         let entries = [];
 
+        // Load the JSON file and initialize pagination
         function loadEntries() {
             fetch('entries.json?cache_bust=' + new Date().getTime())
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to fetch entries');
+                    return response.json();
+                })
                 .then(data => {
                     entries = data;
+                    console.log('Total Entries Loaded:', entries.length);
                     renderPage(currentPage);
                     renderPagination();
                 })
                 .catch(error => console.error('Error loading entries:', error));
         }
 
+        // Render entries for the current page
         function renderPage(page) {
             const grid = document.querySelector('.grid');
             const startIndex = (page - 1) * itemsPerPage;
@@ -162,15 +168,18 @@
             `).join('');
         }
 
+        // Render the pagination buttons
         function renderPagination() {
             const totalPages = Math.ceil(entries.length / itemsPerPage);
+            console.log('Total Pages:', totalPages);
+
             const pagination = document.querySelector('.pagination');
-            pagination.innerHTML = '';
+            pagination.innerHTML = ''; // Clear existing buttons
 
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
                 button.textContent = i;
-                button.classList.add(i === currentPage ? 'active' : '');
+                button.className = i === currentPage ? 'active' : '';
                 button.addEventListener('click', () => {
                     currentPage = i;
                     renderPage(currentPage);
