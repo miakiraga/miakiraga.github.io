@@ -106,7 +106,7 @@
     </main>
     <script>
         // Fetch entries from entries.json and populate the grid dynamically
-        fetch('entries.json')
+        fetch(`entries.json?cache_bust=${new Date().getTime()}`)
             .then(response => response.json())
             .then(entries => {
                 const grid = document.querySelector('.grid');
