@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspiration Station</title>
+    <link rel="stylesheet" href="https://use.typekit.net/hcq1hmu.css">
+    <style>
+        body {
+            background-color: #020202;
+            color: #fff;
+            font-family: 'Polymath', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 1.8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            font-weight: 900;
+            font-style: italic;
+            font-family: 'Neulis Sans', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        .sub-header {
+            font-size: 0.8rem;
+            font-weight: 300;
+            font-family: 'Zuume', sans-serif;
+            color: #ccc;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid-item {
+            overflow: hidden;
+            text-align: left;
+            padding: 10px;
+            transition: transform 0.2s;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+        }
+
+        .grid-item img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .grid-item p {
+            margin: 5px 0 0;
+            font-size: 1rem;
+            text-align: left;
+            font-family: 'Zuume', sans-serif;
+            font-weight: 400;
+        }
+
+        .grid-item .date {
+            margin: 2px 0 0;
+            font-size: 0.7rem;
+            color: #888;
+            text-align: left;
+            font-family: 'Zuume', sans-serif;
+            font-weight: 300;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a:visited {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title"><span style="font-family: 'Zuume', sans-serif; font-weight: 700; font-style: italic;">INSPIRATION</span> <span style="font-family: 'Zuume', sans-serif; font-weight: 300; font-style: normal;">STATION</span></div>
+        <div class="sub-header">Mike's library of motion and video references and stuff</div>
+    </header>
+    <main>
+        <div class="grid"></div>
+    </main>
+    <script>
+        // Fetch entries from entries.json and populate the grid dynamically
+        fetch('entries.json')
+            .then(response => response.json())
+            .then(entries => {
+                const grid = document.querySelector('.grid');
+                grid.innerHTML = entries.map(entry => `
+                    <div class="grid-item">
+                        <a href="${entry.link}" target="_blank">
+                            <img src="${entry.thumbnail}" alt="${entry.title}">
+                            <p>${entry.title}</p>
+                            <div class="date">${new Date(entry.date).toDateString()}</div>
+                        </a>
+                    </div>
+                `).join('');
+            })
+            .catch(error => console.error('Error loading entries:', error));
+    </script>
+</body>
+</html>
